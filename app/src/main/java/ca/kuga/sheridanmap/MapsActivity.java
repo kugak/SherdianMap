@@ -7,7 +7,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -30,19 +34,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Sheridan Brampton Campus
+        // setting campuses locations
         LatLng davis = new LatLng(43.656054, -79.739344);
-        mMap.addMarker(new MarkerOptions().position(davis).title("Davis Campus"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(davis));
-
-        // Sheridan Oakville Campus
         LatLng trafalgar = new LatLng(43.469015, -79.698624);
-        mMap.addMarker(new MarkerOptions().position(trafalgar).title("Trafalgar Campus"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(trafalgar));
-
-        // Sheridan Mississauga Campus
         LatLng hmc = new LatLng(43.591075, -79.647047);
-        mMap.addMarker(new MarkerOptions().position(hmc).title("HMC Campus"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(hmc));
+
+        //enable zoom control
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+
+        //marker for davis
+        mMap.addMarker(new MarkerOptions()
+                            .position(davis)
+                            .title("Davis Campus")
+                            .snippet("Brampton")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+        //marker for trafalger
+        mMap.addMarker(new MarkerOptions()
+                            .position(trafalgar)
+                            .title("Trafalgar Campus")
+                            .snippet("Oakville")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+        //marker for hmc
+        mMap.addMarker(new MarkerOptions()
+                            .position(hmc)
+                            .title("HMC Campus")
+                            .snippet("Mississauga")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+        //set initial zoom and animation at davis
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(davis,10));
+
     }
 }
