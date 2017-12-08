@@ -1,5 +1,6 @@
 package ca.kuga.sheridanmap;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap mMap;
+    private Marker myMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        googleMap.setOnMarkerClickListener(this);
 
         // setting campuses locations
         LatLng davis = new LatLng(43.656054, -79.739344);
@@ -45,21 +48,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         //marker for davis
-        Marker davMrkr = mMap.addMarker(new MarkerOptions()
+        myMarker = googleMap.addMarker(new MarkerOptions()
                             .position(davis)
                             .title("Davis Campus")
                             .snippet("Brampton")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         //marker for trafalger
-        Marker traMrkr = mMap.addMarker(new MarkerOptions()
+        myMarker = googleMap.addMarker(new MarkerOptions()
                             .position(trafalgar)
                             .title("Trafalgar Campus")
                             .snippet("Oakville")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         //marker for hmc
-        Marker hmcMrkr = mMap.addMarker(new MarkerOptions()
+        myMarker = googleMap.addMarker(new MarkerOptions()
                             .position(hmc)
                             .title("HMC Campus")
                             .snippet("Mississauga")
@@ -69,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(davis,10));
 
         //polyline connect campuses
-        Polyline line = mMap.addPolyline(new PolylineOptions()
+        mMap.addPolyline(new PolylineOptions()
                 .add(davis, hmc, trafalgar)
                 .width(9)
                 .color(Color.RED));
@@ -78,7 +81,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(final Marker marker) {
+
+        //get marker title
+        String name= marker.getTitle();
+        //settings for toast
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+
+        if (name.equalsIgnoreCase("Davis Campus"))
+        {
+            CharSequence text = "7899 McLaughlin Rd, Brampton, ON L6Y 5H9";
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else if (name.equalsIgnoreCase("HMC Campus"))
+        {
+            CharSequence text = "4180 Duke of York Blvd, Mississauga, ON L5B 0G5";
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+        }
+        else if (name.equalsIgnoreCase("Trafalgar Campus"))
+        {
+            CharSequence text = "1430 Trafalgar Rd, Oakville, ON L6H 2L1";
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
         return false;
     }
 }
