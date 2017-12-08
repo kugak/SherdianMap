@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -32,11 +31,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         googleMap.setOnMarkerClickListener(this);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         // setting campuses locations
         LatLng davis = new LatLng(43.656054, -79.739344);
@@ -49,34 +48,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //marker for davis
         myMarker = googleMap.addMarker(new MarkerOptions()
-                            .position(davis)
-                            .title("Davis Campus")
-                            .snippet("Brampton")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                .position(davis)
+                .title("Davis Campus")
+                .snippet("Brampton")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         //marker for trafalger
         myMarker = googleMap.addMarker(new MarkerOptions()
-                            .position(trafalgar)
-                            .title("Trafalgar Campus")
-                            .snippet("Oakville")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                .position(trafalgar)
+                .title("Trafalgar Campus")
+                .snippet("Oakville")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         //marker for hmc
         myMarker = googleMap.addMarker(new MarkerOptions()
-                            .position(hmc)
-                            .title("HMC Campus")
-                            .snippet("Mississauga")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                .position(hmc)
+                .title("HMC Campus")
+                .snippet("Mississauga")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
 
         //set initial zoom and animation at davis
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(davis,10));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(davis, 10));
 
         //polyline connect campuses
         mMap.addPolyline(new PolylineOptions()
                 .add(davis, hmc, trafalgar)
                 .width(9)
                 .color(Color.RED));
-
 
     }
 
