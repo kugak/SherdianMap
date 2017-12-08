@@ -1,21 +1,22 @@
 package ca.kuga.sheridanmap;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap mMap;
 
     @Override
@@ -44,28 +45,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         //marker for davis
-        mMap.addMarker(new MarkerOptions()
+        Marker davMrkr = mMap.addMarker(new MarkerOptions()
                             .position(davis)
                             .title("Davis Campus")
                             .snippet("Brampton")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         //marker for trafalger
-        mMap.addMarker(new MarkerOptions()
+        Marker traMrkr = mMap.addMarker(new MarkerOptions()
                             .position(trafalgar)
                             .title("Trafalgar Campus")
                             .snippet("Oakville")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         //marker for hmc
-        mMap.addMarker(new MarkerOptions()
+        Marker hmcMrkr = mMap.addMarker(new MarkerOptions()
                             .position(hmc)
                             .title("HMC Campus")
                             .snippet("Mississauga")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
 
         //set initial zoom and animation at davis
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(davis,10));
 
+        //polyline connect campuses
+        Polyline line = mMap.addPolyline(new PolylineOptions()
+                .add(davis, hmc, trafalgar)
+                .width(9)
+                .color(Color.RED));
+
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
     }
 }
